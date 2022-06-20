@@ -54,6 +54,12 @@ declare module "portal-unleashed" {
         onGameModeEnding(ruleName: string, callback: () => RuleBody);
         onGameModeStarted(ruleName: string, callback: () => RuleBody);
         onMandown(ruleName: string, callback: (player: Player, otherPlayer: Player) => RuleBody);
+        onPlayerEnterVehicle(ruleName: string, callback: (player: Player, vehicle: Vehicle) => RuleBody);
+        onPlayerEnterVehicleSeat(ruleName: string, callback: (player: Player, vehicle: Vehicle, vehicleSeat: number) => RuleBody);
+        onPlayerExitVehicle(ruleName: string, callback: (player: Player, vehicle: Vehicle) => RuleBody);
+        onPlayerExitVehicleSeat(ruleName: string, callback: (player: Player, vehicle: Vehicle, vehicleSeat: number) => RuleBody); 
+        onVehicleDeployed(ruleName: string, callback: (vehicle: Vehicle) => RuleBody);
+        onVehicleDestroyed(ruleName: string, callback: (vehicle: Vehicle)=> RuleBody);
         onPlayerDeployed(ruleName: string, callback: (player: Player) => RuleBody);
         onPlayerDied(ruleName: string, callback: (player: Player, otherPlayer: Player) => RuleBody);
         onPlayerEarnedKill(ruleName: string, callback: (player: Player, otherPlayer: Player) => RuleBody);
@@ -84,6 +90,18 @@ declare module "portal-unleashed" {
         forEach(predicate: (v: any, i: number, a: Array) => any): void;
     }
 
+    class Vehicle {
+        constructor(children: any[]);
+    }
+
+    class VehiclesItem {
+      constructor(children: any[]);
+    }
+
+    class VehiclesTypesItem{
+      constructor(children: any[]);
+    }
+  
     class Player {
         constructor(children: any[]);
     }
@@ -212,7 +230,47 @@ declare module "portal-unleashed" {
         export function Or(param0: boolean, param1: boolean): boolean;
     }
 
-    export namespace player {
+    export namespace dev {
+      export function DebugMessage(param0: string): void;
+
+      export function PrintNumberQueued(param0: number): void;
+    }
+
+    export namespace vehicle {
+        export function DestroyVehicle(param0: Vehicle): void;
+
+        export function ForceAllExitVehicle(param0: Vehicle): void;
+
+        export function ForcePlayerExitVehicle(param0: Player, param1: Vehicle): void;
+
+        export function ForcePlayerToSeat(param0: Player, param1: Vehicle, param2: number): void;
+
+        export function GetAllVehicles(): Array;
+
+        export function GetPlayerFromVehicleSeat(param0: Vehicle, param1: number): Player;
+
+        export function GetPlayerVehicleSeat(param0: Player): number;
+
+        export function GetVehicleFromPlayer(param0: Player): Vehicle;
+
+        export function GetSeatCount(param0: Vehicle): number;
+
+        export function GetVehicleTeamId(param0: Vehicle): TeamId;
+
+        export function IsVehicleOccupied(param0: Vehicle): boolean; 
+
+        export function IsVehicleSeatOccupied(param0: Vehicle, param1: number): boolean;
+
+        export function Vehicles(param0: any): VehiclesItem;
+
+        export function Vehicles(param0: any, param1: any): VehiclesItem;
+
+        export function VehiclesTypesItem(param0: any): VehiclesTypesItem;
+
+        export function VehiclesTypesItem(param0: any, param1: any): VehiclesTypesItem;
+    }
+    
+export namespace player {
         export function AddSoldierWeapon(param0: Player, param1: Enum_PrimaryWeapons): void;
 
         export function AddSoldierWeapon(param0: Player, param1: Enum_SecondaryWeapons): void;
@@ -393,6 +451,9 @@ declare module "portal-unleashed" {
     }
 
     export namespace other {
+
+        
+      
         export function SetVariable(param0: any, param1: any): void;
 
         export function CharacterGadgetsItem(param0: string, param1: string): Enum_CharacterGadgets;
